@@ -1,0 +1,60 @@
+<app-navbar></app-navbar>
+<div>
+    <h2>Task Assignment</h2>
+    
+    <form (ngSubmit)="addTask()">
+      <label for="member">Team Member:</label>
+      <select id="member" [(ngModel)]="newTask.memberId" name="member" required>
+        <option *ngFor="let member of teamMembers" [value]="member.id">{{ member.name }}</option>
+      </select>
+      
+      <label for="name">Task Name:</label>
+      <input id="name" type="text" [(ngModel)]="newTask.name" name="name" required>
+      
+      <label for="priority">Priority:</label>
+      <select id="priority" [(ngModel)]="newTask.priority" name="priority" required>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+      
+      <label for="dueDate">Due Date:</label>
+      <input id="dueDate" type="date" [(ngModel)]="newTask.dueDate" name="dueDate" required>
+      
+      <label for="status">Status:</label>
+      <select id="status" [(ngModel)]="newTask.status" name="status" required>
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+      
+      <button type="submit">{{ editingTaskId === null ? 'Add Task' : 'Update Task' }}</button>
+    </form>
+  
+    <h3>Task List</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Team Member</th>
+          <th>Task Name</th>
+          <th>Priority</th>
+          <th>Due Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks">
+          <td>{{ getTeamMemberName(task.memberId) }}</td>
+          <td>{{ task.name }}</td>
+          <td>{{ task.priority }}</td>
+          <td>{{ task.dueDate | date }}</td>
+          <td>{{ task.status }}</td>
+          <td>
+            <button (click)="startEditing(task.id)">Edit</button>
+            <button (click)="deleteTask(task.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>        
+  </div>

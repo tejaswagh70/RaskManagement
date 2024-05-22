@@ -1,0 +1,55 @@
+
+<app-navbar></app-navbar>
+<div class="container">
+    <h2>Client Information</h2>
+  
+    <button *ngIf="!isAdding" (click)="isAdding = true">Add Client</button>
+  
+    <form *ngIf="isAdding" (ngSubmit)="addClient()" class="form-inline">
+      <input type="text" placeholder="Name" [(ngModel)]="newClient.name" name="name" required>
+      <input type="email" placeholder="Email" [(ngModel)]="newClient.email" name="email" required>
+      <input type="tel" placeholder="Phone" [(ngModel)]="newClient.phone" name="phone" required>
+      <button type="submit">Save</button>
+      <button type="button" (click)="isAdding = false">Cancel</button>
+    </form>
+  
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let client of clients">
+          <ng-container *ngIf="isEditing !== client.id; else editMode">
+            <td>{{ client.id }}</td>
+            <td>{{ client.name }}</td>
+            <td>{{ client.email }}</td>
+            <td>{{ client.phone }}</td>
+            
+            <td>
+              <button (click)="startEditing(client.id)">Edit</button>
+              <button (click)="deleteClient(client.id)">Delete</button>
+            </td>
+          </ng-container>
+          <ng-template #editMode>
+            <td>{{ client.id }}</td>
+            <td><input type="text" [(ngModel)]="client.name" name="editName"></td>
+            <td><input type="email" [(ngModel)]="client.email" name="editEmail"></td>
+            <td><input type="tel" [(ngModel)]="client.phone" name="editPhone"></td>
+            
+            <td>
+              <button (click)="saveChanges(client)">Save</button>
+              <button (click)="cancelEditing()">Cancel</button>
+            </td>
+          </ng-template>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
